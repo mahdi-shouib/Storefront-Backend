@@ -22,4 +22,12 @@ export class ProductStore {
 		conn.release();
 		return result.rows[0];
 	}
+
+	async create(p: Product): Promise<Product> {
+		const sql = 'INSERT INTO products(name, price) VALUES($1, $2) RETURNING *';
+		const conn = await db.connect();
+		const result = await conn.query(sql, [p.name, p.price]);
+		conn.release();
+		return result.rows[0];
+	}
 }
