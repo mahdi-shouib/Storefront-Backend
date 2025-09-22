@@ -14,4 +14,12 @@ export class ProductStore {
 		conn.release();
 		return result.rows;
 	}
+
+	async show(id: string): Promise<Product> {
+		const sql = 'SELECT * FROM products WHERE id=($1)';
+		const conn = await db.connect();
+		const result = await conn.query(sql, [id]);
+		conn.release();
+		return result.rows[0];
+	}
 }
