@@ -32,6 +32,8 @@
 		"@types/jasmine": "^5.1.9",
 		"@types/node": "^24.5.2",
 		"@types/pg": "^8.15.5",
+		"db-migrate": "^0.11.14",
+		"db-migrate-pg": "^1.5.2",
 		"eslint": "^9.36.0",
 		"jasmine": "^5.10.0",
 		"jasmine-spec-reporter": "^7.0.0",
