@@ -15,7 +15,7 @@
 		"format": "prettier --write src/**/*.{ts,json}",
 		"lint": "eslint src/**/*.ts",
 		"prebuild": "yarn format && yarn lint",
-		"start": "ts-node src/server.ts",
+		"start": "node dist/server.js",
 		"watch": "tsc-watch --onSuccess \"node dist/server.js\"",
 		"test": "jasmine-ts",
 		"build": "tsc"
