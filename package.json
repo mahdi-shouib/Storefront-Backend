@@ -7,7 +7,7 @@
 		"format": "prettier --write src/**/*.{ts,json}",
 		"lint": "eslint src/**/*.ts",
 		"prebuild": "npm run format && npm run lint",
-		"start": "node src/server.ts",
+		"start": "ts-node src/server.ts",
 		"watch": "tsc-watch --onSuccess \"node dist/server.js\"",
 		"test": "jasmine-ts",
 		"build": "tsc"
@@ -21,6 +21,7 @@
 	"devDependencies": {
 		"@types/express": "^5.0.3",
 		"@types/jasmine": "^5.1.9",
+		"@types/node": "^24.5.2",
 		"@types/pg": "^8.15.5",
 		"eslint": "^9.36.0",
 		"jasmine": "^5.10.0",
