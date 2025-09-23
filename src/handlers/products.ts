@@ -23,7 +23,7 @@ const create = async (req: Request, res: Response) => {
 		const new_product: Omit<Product, 'id'> = {
 			name: req.body.name,
 			price: req.body.price,
-			category: req.body.category ?? 'none',
+			category: req.body.category,
 		};
 		const product = await store.create(new_product as Product);
 		res.json(product);
