@@ -1,10 +1,17 @@
 import express, { Request, Response } from 'express';
+import cors from 'cors';
 import products_routes from './handlers/products';
 
 const app: express.Application = express();
 const port: number = 3000;
 
+const corsOptions = {
+	origin: 'http://examplealloweddomain.com',
+	optionsSuccessStatus: 200,
+};
+
 app.use(express.json());
+app.use(cors(corsOptions));
 
 products_routes(app);
 
@@ -15,3 +22,5 @@ app.get('/', function (_req: Request, res: Response) {
 app.listen(port, function () {
 	console.log(`starting app on: http://localhost:${port}`);
 });
+
+export default app;
