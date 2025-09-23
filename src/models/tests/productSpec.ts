@@ -1,3 +1,4 @@
+import db from '../../db';
 import { Product, ProductStore } from '../product';
 
 const store = new ProductStore();
@@ -35,5 +36,12 @@ describe('Product Model Tests', () => {
 		expect(products.length).toBe(2);
 		expect(products[0].id).toBe(1);
 		expect(products[1].category).toBe('category');
+	});
+
+	afterAll(async () => {
+		const conn = await db.connect();
+		await conn.query('DELETE FROM products');
+		await conn.query('ALTER SEQUENCE products_id_seq RESTART WITH 1');
+		conn.release();
 	});
 });
