@@ -11,10 +11,10 @@ const index = async (_req: Request, res: Response) => {
 
 const show = async (req: Request, res: Response) => {
 	const product = await store.show(req.params.id);
-    if (!product) {
-        res.status(404).send('Product Not Found!');
-        return;
-    }
+	if (!product) {
+		res.status(404).send('Product Not Found!');
+		return;
+	}
 	res.json(product);
 };
 
