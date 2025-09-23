@@ -29,7 +29,7 @@ describe('Product Endpoints Tests', () => {
 			.send(test_product);
 		expect(response.ok).toBe(true);
 		expect(response.body).toEqual({
-			id: jasmine.any(Number),
+			id: 1,
 			...test_product,
 		});
 	});
@@ -37,6 +37,24 @@ describe('Product Endpoints Tests', () => {
 	it('POST /products with invalid token should fail', async () => {
 		const response = await request.post('/products').send(test_product);
 		expect(response.unauthorized).toBe(true);
+	});
+
+	it('GET /products should return list of all products', async () => {
+		const response = await request.get('/products');
+		expect(response.ok).toBe(true);
+		expect(response.body.length).toBe(1);
+		expect(response.body[0].price).toBe(100);
+	});
+
+	it('GET /products/:id with valid id should return product', async () => {
+		const response = await request.get('/products/1');
+		expect(response.ok).toBe(true);
+		expect(response.body.category).toBe('test_category');
+	});
+
+	it('GET /products/:id with invalid id should return not found', async () => {
+		const response = await request.get('/products/10');
+		expect(response.notFound).toBe(true);
 	});
 
 	afterAll(async () => {
