@@ -2,13 +2,13 @@
 	"name": "storefront-backend",
 	"version": "1.0.0",
 	"description": "",
-	"homepage": "https://github.com/mahdi-shouib/Image-Processing-API#readme",
+	"homepage": "https://github.com/mahdi-shouib/Storefront-Backend#readme",
 	"bugs": {
-		"url": "https://github.com/mahdi-shouib/Image-Processing-API/issues"
+		"url": "https://github.com/mahdi-shouib/Storefront-Backend/issues"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/mahdi-shouib/Image-Processing-API.git"
+		"url": "git+https://github.com/mahdi-shouib/Storefront-Backend.git"
 	},
 	"main": "dist/server.js",
 	"scripts": {
