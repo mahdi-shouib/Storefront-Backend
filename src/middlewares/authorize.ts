@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-export const authorize = async (
+const authorize = async (
 	req: Request,
 	res: Response,
 	next: NextFunction,
@@ -15,3 +15,5 @@ export const authorize = async (
 	}
 	next();
 };
+
+export default authorize;

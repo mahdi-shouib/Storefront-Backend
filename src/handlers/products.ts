@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { Product, ProductStore } from '../models/product';
-import { authorize } from '../middlewares/authorize';
+import authorize from '../middlewares/authorize';
 
 const store = new ProductStore();
 
