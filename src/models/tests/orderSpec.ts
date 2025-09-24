@@ -22,7 +22,7 @@ describe('Order Model Tests', () => {
 		await product_store.create(new_product as Product);
 	});
 
-	it('should create a new order', async () => {
+	it('should create a new open order', async () => {
 		const new_order: Omit<Order, 'id'> = {
 			user_id: 1,
 			status: 'open',
@@ -32,10 +32,25 @@ describe('Order Model Tests', () => {
 		expect(order.status).toBe('open');
 	});
 
-	it('current method returns a list of all open orders by user id', async () => {
-		const orders = await store.current('1');
-		expect(orders).toBeTruthy();
-		expect(orders.length).toBe(1);
+	it('should create a new complete order', async () => {
+		const new_order: Omit<Order, 'id'> = {
+			user_id: 1,
+			status: 'complete',
+		};
+		const order = await store.create(new_order as Order);
+		expect(order).toBeTruthy();
+		expect(order.status).toBe('complete');
+	});
+
+	it('order by status method returns a list of all orders by user id and status', async () => {
+		const openOrders = await store.orderByStatus('1', 'open');
+		const completeOrders = await store.orderByStatus('1', 'complete');
+		expect(openOrders).toBeTruthy();
+		expect(openOrders.length).toBe(1);
+		expect(openOrders[0].status).toBe('open');
+		expect(completeOrders).toBeTruthy();
+		expect(completeOrders.length).toBe(1);
+		expect(completeOrders[0].status).toBe('complete');
 	});
 
 	it('should add a new product to join table', async () => {
