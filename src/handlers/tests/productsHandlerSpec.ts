@@ -2,25 +2,28 @@ import supertest from 'supertest';
 import app from '../../server';
 import jwt from 'jsonwebtoken';
 import db from '../../db';
+import { Product } from '../../models/product';
+import { User, UserStore } from '../../models/user';
 
 const request = supertest(app);
+const store = new UserStore();
 
 describe('Product Endpoints Tests', () => {
 	let test_token: string;
-	const test_product = {
+	const test_product: Omit<Product, 'id'> = {
 		name: 'test_product',
 		price: 100,
 		category: 'test_category',
 	};
+	const test_user: Omit<User, 'id'> = {
+		firstname: 'test_firstname',
+		lastname: 'test_lastname',
+		password: 'test_password',
+	};
 
 	beforeAll(async () => {
-		const test_user = {
-			id: 1,
-			first_name: 'test_firstname',
-			last_name: 'test_lastname',
-			password: 'test_password',
-		};
-		test_token = jwt.sign({ user: test_user }, process.env.TOKEN_SECRET!);
+		const user = await store.create(test_user as User);
+		test_token = jwt.sign({ user: user }, process.env.TOKEN_SECRET!);
 	});
 
 	it('POST /products with valid token creates a product', async () => {
@@ -62,6 +65,8 @@ describe('Product Endpoints Tests', () => {
 		const conn = await db.connect();
 		await conn.query('DELETE FROM products');
 		await conn.query('ALTER SEQUENCE products_id_seq RESTART WITH 1');
+		await conn.query('DELETE FROM users');
+		await conn.query('ALTER SEQUENCE users_id_seq RESTART WITH 1');
 		conn.release();
 	});
 });
