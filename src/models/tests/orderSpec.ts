@@ -32,6 +32,12 @@ describe('Order Model Tests', () => {
 		expect(order.status).toBe('open');
 	});
 
+	it('current method returns a list of all open orders by user id', async () => {
+		const orders = await store.current('1');
+		expect(orders).toBeTruthy();
+		expect(orders.length).toBe(1);
+	});
+
 	it('should add a new product to join table', async () => {
 		const order_product = await store.addProduct('1', '1', 10);
 		expect(order_product).toBeTruthy();
