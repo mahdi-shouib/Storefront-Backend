@@ -43,6 +43,16 @@ describe('Product Endpoints Tests', () => {
 		expect(response.unauthorized).toBe(true);
 	});
 
+	it('POST /products with invalid body fails', async () => {
+		const response = await request
+			.post('/products')
+			.set('Authorization', `Bearer ${test_token}`)
+			.send({
+				name: 'test',
+			});
+		expect(response.badRequest).toBe(true);
+	});
+
 	it('GET /products should return list of all products', async () => {
 		const response = await request.get('/products');
 		expect(response.ok).toBe(true);

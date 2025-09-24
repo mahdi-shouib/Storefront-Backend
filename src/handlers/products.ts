@@ -19,17 +19,20 @@ const show = async (req: Request, res: Response) => {
 };
 
 const create = async (req: Request, res: Response) => {
-	try {
-		const new_product: Omit<Product, 'id'> = {
-			name: req.body.name,
-			price: req.body.price,
-			category: req.body.category,
-		};
-		const product = await store.create(new_product as Product);
-		res.json(product);
-	} catch (err) {
-		res.status(400).send(String(err));
+	const { name, price, category } = req.body;
+
+	if (!name || !price) {
+		res.status(400).send('Invalid Request!');
+		return;
 	}
+
+	const new_product: Omit<Product, 'id'> = {
+		name,
+		price,
+		category,
+	};
+	const product = await store.create(new_product as Product);
+	res.json(product);
 };
 
 const products_routes = (app: express.Application) => {
