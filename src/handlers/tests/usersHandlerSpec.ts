@@ -54,6 +54,36 @@ describe('User Endpoints Tests', () => {
 		expect(response.body.firstname).toBe('test_firstname');
 	});
 
+	it('POST /users with invalid token fails', async () => {
+		const response = await request.post('/users').send(test_user);
+		expect(response.unauthorized).toBe(true);
+	});
+
+	it('POST /users with valid token returns token', async () => {
+		const response = await request
+			.post('/users')
+			.set('Authorization', `Bearer ${test_token}`)
+			.send(test_user);
+		expect(response.ok).toBe(true);
+		expect(() => {
+			jwt.verify(response.text, process.env.TOKEN_SECRET!);
+		}).not.toThrow();
+	});
+
+	it('POST /users with invalid body fails', async () => {
+		const response = await request
+			.post('/users')
+			.set('Authorization', `Bearer ${test_token}`)
+			.send({
+				firstname: 'test',
+				lastname: 'test',
+			});
+		expect(response.badRequest).toBe(true);
+		expect(() => {
+			jwt.verify(response.text, process.env.TOKEN_SECRET!);
+		}).toThrow();
+	});
+
 	afterAll(async () => {
 		const conn = await db.connect();
 		await conn.query('DELETE FROM users');
