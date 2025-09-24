@@ -30,7 +30,7 @@ export class UserStore {
 			'INSERT INTO users(firstname, lastname, password) VALUES($1, $2, $3) RETURNING *';
 		const hash = bcrypt.hashSync(
 			u.password + process.env.BCRYPT_SECRET,
-			process.env.SALT_ROUNDS!,
+			parseInt(process.env.SALT_ROUNDS!),
 		);
 		const conn = await db.connect();
 		const result = await conn.query(sql, [u.first_name, u.last_name, hash]);

@@ -21,7 +21,6 @@ describe('Product Endpoints Tests', () => {
 			password: 'test_password',
 		};
 		test_token = jwt.sign({ user: test_user }, process.env.TOKEN_SECRET!);
-		console.log(test_token);
 	});
 
 	it('POST /products with valid token creates a product', async () => {
