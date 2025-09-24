@@ -16,6 +16,14 @@ export class OrderStore {
 		return result.rows[0];
 	}
 
+	async current(id: string): Promise<Order[]> {
+		const sql = 'SELECT * FROM orders WHERE user_id=($1) AND status=($2)';
+		const conn = await db.connect();
+		const result = await conn.query(sql, [id, 'open']);
+		conn.release();
+		return result.rows;
+	}
+
 	async addProduct(
 		order_id: string,
 		product_id: string,
