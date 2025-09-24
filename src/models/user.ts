@@ -3,8 +3,8 @@ import bcrypt from 'bcrypt';
 
 export type User = {
 	id: number;
-	first_name: string;
-	last_name: string;
+	firstname: string;
+	lastname: string;
 	password: string;
 };
 
@@ -33,7 +33,7 @@ export class UserStore {
 			parseInt(process.env.SALT_ROUNDS!),
 		);
 		const conn = await db.connect();
-		const result = await conn.query(sql, [u.first_name, u.last_name, hash]);
+		const result = await conn.query(sql, [u.firstname, u.lastname, hash]);
 		conn.release();
 		return result.rows[0];
 	}
