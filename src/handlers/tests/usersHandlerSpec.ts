@@ -34,6 +34,26 @@ describe('User Endpoints Tests', () => {
 		expect(response.unauthorized).toBe(true);
 	});
 
+	it('GET /users/:id with invalid token fails', async () => {
+		const response = await request.get('/users/1');
+		expect(response.unauthorized).toBe(true);
+	});
+
+	it('GET /users/:id with valid token but invalid id return not found', async () => {
+		const response = await request
+			.get('/users/10')
+			.set('Authorization', `Bearer ${test_token}`);
+		expect(response.notFound).toBe(true);
+	});
+
+	it('GET /users/:id with valid token and valid id return user', async () => {
+		const response = await request
+			.get('/users/1')
+			.set('Authorization', `Bearer ${test_token}`);
+		expect(response.ok).toBe(true);
+		expect(response.body.firstname).toBe('test_firstname');
+	});
+
 	afterAll(async () => {
 		const conn = await db.connect();
 		await conn.query('DELETE FROM users');
