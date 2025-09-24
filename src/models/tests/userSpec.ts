@@ -39,4 +39,11 @@ describe('User Model Tests', () => {
 		expect(users[0].id).toBe(1);
 		expect(users[1].firstname).toBe('test_firstname_2');
 	});
+
+	afterAll(async () => {
+		const conn = await db.connect();
+		await conn.query('DELETE FROM USERS');
+		await conn.query('ALTER SEQUENCE users_id_seq RESTART WITH 1');
+		conn.release();
+	});
 });
