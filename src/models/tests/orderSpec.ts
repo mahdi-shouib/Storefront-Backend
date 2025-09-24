@@ -1,9 +1,11 @@
 import db from '../../db';
 import { Order, OrderStore } from '../order';
+import { Product, ProductStore } from '../product';
 import { User, UserStore } from '../user';
 
 const store = new OrderStore();
 const user_store = new UserStore();
+const product_store = new ProductStore();
 
 describe('Order Model Tests', () => {
 	beforeAll(async () => {
@@ -12,7 +14,12 @@ describe('Order Model Tests', () => {
 			lastname: 'test_lastname',
 			password: 'test_password',
 		};
+		const new_product: Omit<Product, 'id'> = {
+			name: 'test_product',
+			price: 100,
+		};
 		await user_store.create(new_user as User);
+		await product_store.create(new_product as Product);
 	});
 
 	it('should create a new order', async () => {
@@ -25,12 +32,22 @@ describe('Order Model Tests', () => {
 		expect(order.status).toBe('open');
 	});
 
+	it('should add a new product to join table', async () => {
+		const order_product = await store.addProduct('1', '1', 10);
+		expect(order_product).toBeTruthy();
+		expect(order_product.order_id).toBe(1);
+		expect(order_product.product_id).toBe(1);
+		expect(order_product.quantity).toBe(10);
+	});
+
 	afterAll(async () => {
 		const conn = await db.connect();
 		await conn.query('DELETE FROM orders');
 		await conn.query('ALTER SEQUENCE orders_id_seq RESTART WITH 1');
 		await conn.query('DELETE FROM users');
 		await conn.query('ALTER SEQUENCE users_id_seq RESTART WITH 1');
+		await conn.query('DELETE FROM products');
+		await conn.query('ALTER SEQUENCE products_id_seq RESTART WITH 1');
 		conn.release();
 	});
 });

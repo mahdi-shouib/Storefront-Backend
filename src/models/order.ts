@@ -20,7 +20,12 @@ export class OrderStore {
 		order_id: string,
 		product_id: string,
 		quantity: number,
-	): Promise<Order> {
+	): Promise<{
+		id: number;
+		order_id: number;
+		product_id: number;
+		quantity: number;
+	}> {
 		const sql =
 			'INSERT INTO order_products(order_id, product_id, quantity) VALUES($1, $2, $3) RETURNING *';
 		const conn = await db.connect();
