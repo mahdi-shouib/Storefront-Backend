@@ -7,6 +7,15 @@ export type Order = {
 };
 
 export class OrderStore {
+	async create(o: Order): Promise<Order> {
+		const sql =
+			'INSERT INTO orders(user_id, status) VALUES($1, $2) RETURNING *';
+		const conn = await db.connect();
+		const result = await conn.query(sql, [o.user_id, o.status]);
+		conn.release();
+		return result.rows[0];
+	}
+
 	async addProduct(
 		order_id: string,
 		product_id: string,
