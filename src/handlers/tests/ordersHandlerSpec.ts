@@ -54,6 +54,50 @@ describe('Order Endpoints Tests', () => {
 		});
 	});
 
+	it('POST /orders with invalid status fails', async () => {
+		const test_order: Omit<Order, 'id'> = {
+			user_id: 1,
+			status: 'test',
+		};
+		const response = await request
+			.post('/orders')
+			.set('Authorization', `Bearer ${test_token}`)
+			.send(test_order);
+		expect(response.badRequest).toBe(true);
+	});
+
+	it('POST /orders/:id/products with invalid token fails', async () => {
+		const response = await request.post('/orders/1/products').send({
+			product_id: 1,
+			quantity: 5,
+		});
+		expect(response.unauthorized).toBe(true);
+	});
+
+	it('POST /orders/:id/products with valid token adds new product to order', async () => {
+		const response = await request
+			.post('/orders/1/products')
+			.set('Authorization', `Bearer ${test_token}`)
+			.send({
+				product_id: 1,
+				quantity: 5,
+			});
+		expect(response.ok).toBe(true);
+		expect(response.body.order_id).toBe(1);
+		expect(response.body.product_id).toBe(1);
+		expect(response.body.quantity).toBe(5);
+	});
+
+	it('POST /orders/:id/products with invalid body fails', async () => {
+		const response = await request
+			.post('/orders/1/products')
+			.set('Authorization', `Bearer ${test_token}`)
+			.send({
+				product_id: 1,
+			});
+		expect(response.badRequest).toBe(true);
+	});
+
 	afterAll(async () => {
 		const conn = await db.connect();
 		await conn.query('DELETE FROM orders');
