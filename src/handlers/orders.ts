@@ -7,7 +7,7 @@ const store = new OrderStore();
 const create = async (req: Request, res: Response) => {
 	const { user_id, status } = req.body;
 
-	if (!user_id || !status) {
+	if (!user_id || !status || (status !== 'open' && status !== 'complete')) {
 		res.status(400).send('Invalid Request!');
 		return;
 	}
