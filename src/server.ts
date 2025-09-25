@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import products_routes from './handlers/products';
 import users_routes from './handlers/users';
+import orders_routes from './handlers/orders';
 
 const app: express.Application = express();
 const port: number = 3000;
@@ -16,6 +17,7 @@ app.use(cors(corsOptions));
 
 products_routes(app);
 users_routes(app);
+orders_routes(app);
 
 app.get('/', function (_req: Request, res: Response) {
 	res.send('Hello World!');
