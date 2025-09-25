@@ -21,9 +21,27 @@ const create = async (req: Request, res: Response) => {
 	res.json(order);
 };
 
+const addProduct = async (req: Request, res: Response) => {
+	const { product_id, quantity } = req.body;
+	const order_id = req.params.id;
+
+	if (!order_id || !product_id || !quantity) {
+		res.status(400).send('Invalid Request!');
+		return;
+	}
+
+	const order_product = await store.addProduct(
+		order_id as string,
+		product_id as string,
+		quantity as number,
+	);
+	res.json(order_product);
+};
+
 const orders_routes = (app: express.Application) => {
 	app.use(authorize);
 	app.post('/orders', create);
+	app.post('/orders/:id/products', addProduct);
 };
 
 export default orders_routes;
