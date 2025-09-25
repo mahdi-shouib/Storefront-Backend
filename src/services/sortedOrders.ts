@@ -18,7 +18,7 @@ const orderByStatus = async (req: Request, res: Response) => {
 
 const sorted_orders_routes = (app: express.Application) => {
 	app.use(authorize);
-	app.get('/users/:id/orders/:status', orderByStatus);
+	app.post('/users/:id/orders/:status', orderByStatus);
 };
 
 export default sorted_orders_routes;
