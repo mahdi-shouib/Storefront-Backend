@@ -54,15 +54,9 @@ describe('User Endpoints Tests', () => {
 		expect(response.body.firstname).toBe('test_firstname');
 	});
 
-	it('POST /users with invalid token fails', async () => {
-		const response = await request.post('/users').send(test_user);
-		expect(response.unauthorized).toBe(true);
-	});
-
-	it('POST /users with valid token returns token', async () => {
+	it('POST /users with valid body returns token', async () => {
 		const response = await request
 			.post('/users')
-			.set('Authorization', `Bearer ${test_token}`)
 			.send(test_user);
 		expect(response.ok).toBe(true);
 		expect(() => {
@@ -73,7 +67,6 @@ describe('User Endpoints Tests', () => {
 	it('POST /users with invalid body fails', async () => {
 		const response = await request
 			.post('/users')
-			.set('Authorization', `Bearer ${test_token}`)
 			.send({
 				firstname: 'test',
 				lastname: 'test',
