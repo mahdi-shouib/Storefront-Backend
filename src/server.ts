@@ -24,17 +24,7 @@ orders_routes(app);
 sorted_orders_routes(app);
 
 app.get('/', function (_req: Request, res: Response) {
-	res.send(
-		jwt.sign(
-			{
-				secret: bcrypt.hashSync(
-					process.env.BCRYPT_SECRET!,
-					parseInt(process.env.SALT_ROUNDS!),
-				),
-			},
-			process.env.TOKEN_SECRET!,
-		),
-	);
+	res.send('Hello World!');
 });
 
 app.listen(port, function () {
