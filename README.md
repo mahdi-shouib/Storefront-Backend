@@ -60,12 +60,12 @@ docker compose up
 
 The Postgres Docker image will be downloaded and a container will be created and started.
 
-> [!NOTE]  
+> [!Tip]  
 > If you face any issues regarding volumes, try running this command first:
-
-```bash
-docker compose down -v
-```
+>
+> ```bash
+> docker compose down -v
+> ```
 
 ### 5. Build and Run
 
