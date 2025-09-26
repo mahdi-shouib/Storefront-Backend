@@ -1,7 +1,5 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
 import products_routes from './handlers/products';
 import users_routes from './handlers/users';
 import orders_routes from './handlers/orders';
