@@ -34,21 +34,21 @@ describe('Order Endpoint Services Tests', () => {
 		test_token = jwt.sign({ user: user }, process.env.TOKEN_SECRET!);
 	});
 
-	it('POST /users/:id/orders/:status with invalid token fails', async () => {
-		const response = await request.post('/users/1/orders/open');
+	it('GET /users/:id/orders/:status with invalid token fails', async () => {
+		const response = await request.get('/users/1/orders/open');
 		expect(response.unauthorized).toBe(true);
 	});
 
-	it('POST /users/:id/orders/:status with invalid status fails', async () => {
+	it('GET /users/:id/orders/:status with invalid status fails', async () => {
 		const response = await request
-			.post('/users/1/orders/test')
+			.get('/users/1/orders/test')
 			.set('Authorization', `Bearer ${test_token}`);
 		expect(response.badRequest).toBe(true);
 	});
 
-	it('POST /users/:id/orders/:status with valid token and open status returns all open orders for user', async () => {
+	it('GET /users/:id/orders/:status with valid token and open status returns all open orders for user', async () => {
 		const response = await request
-			.post('/users/1/orders/open')
+			.get('/users/1/orders/open')
 			.set('Authorization', `Bearer ${test_token}`);
 		const orders: Order[] = response.body;
 		expect(response.ok).toBe(true);
@@ -56,9 +56,9 @@ describe('Order Endpoint Services Tests', () => {
 		expect(orders.filter((o) => o.status !== 'open')).toEqual([]);
 	});
 
-	it('POST /users/:id/orders/:status with valid token and complete status returns all complete orders for user', async () => {
+	it('GET /users/:id/orders/:status with valid token and complete status returns all complete orders for user', async () => {
 		const response = await request
-			.post('/users/1/orders/complete')
+			.get('/users/1/orders/complete')
 			.set('Authorization', `Bearer ${test_token}`);
 		const orders: Order[] = response.body;
 		expect(response.ok).toBe(true);
