@@ -21,7 +21,7 @@
 		"create_test": "dotenv -e .env -- sh -c \"db-migrate db:create $POSTGRES_TEST_DB\"",
 		"start_test": "dotenv -e .env -- sh -c \"ENV=test jasmine-ts\"",
 		"migrate_test": "db-migrate --env test up",
-		"test": "sh -c \"yarn drop_test && yarn create_test && yarn migrate_test && yarn start_test; yarn drop_test\"",
+		"test": "yarn drop_test && yarn create_test && yarn migrate_test && yarn start_test && yarn drop_test",
 		"build": "tsc"
 	},
 	"author": "Mahdi Shouib",
