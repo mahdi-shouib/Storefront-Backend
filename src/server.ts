@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 import products_routes from './handlers/products';
 import users_routes from './handlers/users';
 import orders_routes from './handlers/orders';
@@ -22,7 +24,17 @@ orders_routes(app);
 sorted_orders_routes(app);
 
 app.get('/', function (_req: Request, res: Response) {
-	res.send('Hello World!');
+	res.send(
+		jwt.sign(
+			{
+				secret: bcrypt.hashSync(
+					process.env.BCRYPT_SECRET!,
+					parseInt(process.env.SALT_ROUNDS!),
+				),
+			},
+			process.env.TOKEN_SECRET!,
+		),
+	);
 });
 
 app.listen(port, function () {
