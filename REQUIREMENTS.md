@@ -14,7 +14,7 @@
 |--------|-----------------------------|-------------------------------------------|----------------|---------- |
 | GET    | /users                      | Get all users                             | Yes            |           |
 | GET    | /users/:id                  | Get a user by id                          | Yes            | user id   |
-| POST   | /users                      | Create a new user                         | Yes            |           |
+| POST   | /users                      | Create a new user                         | No             |           |
 
 ### Orders
 
@@ -26,7 +26,7 @@
 
 ## Data Shapes
 
-### Product
+### Products
 
 | Column   | Type                        |
 |----------|-----------------------------|
@@ -35,7 +35,7 @@
 | price    | integer NOT NULL            |
 | category | varchar(32)                 |
 
-### User
+### Users
 
 | Column    | Type                        |
 |-----------|-----------------------------|
