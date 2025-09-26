@@ -100,11 +100,11 @@ db-migrate up
 
 You can use [Postman](https://www.postman.com/) or any other API testing tool to use the endpoints.
 
-Refer to [The Requirements](./REQUIREMENTS.md) for more info on the API endpoints and data shapes.
-
 > [!IMPORTANT]  
 > I dont know if its a design flaw or me not understanding the requirements correctly, but how can a user require a token to be created? The user wont have a token yet! So I made it so that the root route returns a valid token for the user to use. But in a logical scenario, the user should be able to create an account without a token.
 > Be sure to send the token in the `Authorization` header as `Bearer <token>` for the endpoints that require a token.
+
+Refer to [The Requirements](./REQUIREMENTS.md) for more info on the API endpoints and data shapes.
 
 ## Testing
 
