@@ -52,7 +52,7 @@
 | user_id | integer FOREIGN KEY users(id) ON DELETE CASCADE |
 | status  | varchar(10) NOT NULL                            |
 
-### Orders
+### Order Products
 
 | Column     | Type                                               |
 |------------|----------------------------------------------------|
