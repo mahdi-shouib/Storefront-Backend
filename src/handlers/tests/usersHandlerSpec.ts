@@ -55,9 +55,7 @@ describe('User Endpoints Tests', () => {
 	});
 
 	it('POST /users with valid body returns token', async () => {
-		const response = await request
-			.post('/users')
-			.send(test_user);
+		const response = await request.post('/users').send(test_user);
 		expect(response.ok).toBe(true);
 		expect(() => {
 			jwt.verify(response.text, process.env.TOKEN_SECRET!);
@@ -65,12 +63,10 @@ describe('User Endpoints Tests', () => {
 	});
 
 	it('POST /users with invalid body fails', async () => {
-		const response = await request
-			.post('/users')
-			.send({
-				firstname: 'test',
-				lastname: 'test',
-			});
+		const response = await request.post('/users').send({
+			firstname: 'test',
+			lastname: 'test',
+		});
 		expect(response.badRequest).toBe(true);
 		expect(() => {
 			jwt.verify(response.text, process.env.TOKEN_SECRET!);
