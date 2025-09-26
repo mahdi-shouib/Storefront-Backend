@@ -39,9 +39,8 @@ const addProduct = async (req: Request, res: Response) => {
 };
 
 const orders_routes = (app: express.Application) => {
-	app.use(authorize);
-	app.post('/orders', create);
-	app.post('/orders/:id/products', addProduct);
+	app.post('/orders', authorize, create);
+	app.post('/orders/:id/products', authorize, addProduct);
 };
 
 export default orders_routes;
