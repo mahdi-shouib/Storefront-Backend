@@ -1,54 +1,180 @@
-# Storefront Backend Project
+# Storefront Backend
 
-## Getting Started
+This is the backend for a storefront server application built with **Node.js**, **TypeScript**, **Express**, and tested with **Jasmine**. It provides RESTful APIs endpoints to manage products, users, and orders. The Endpoints use **JWT**s for authentication as well as password hashing. All of the data is stored in a **PostgreSQL** database and containerized in a **Docker** container.
 
-This repo contains a basic Node and Express app to get you started in constructing an API. To get started, clone this repo and run `yarn` in your terminal at the project root.
+## Setup
 
-## Required Technologies
-Your application must make use of the following libraries:
-- Postgres for the database
-- Node/Express for the application logic
-- dotenv from npm for managing environment variables
-- db-migrate from npm for migrations
-- jsonwebtoken from npm for working with JWTs
-- jasmine from npm for testing
+### 1. Clone the Repository and Install Global Dependencies
 
-## Steps to Completion
+```bash
+git clone https://github.com/mahdi-shouib/Storefront-Backend.git
 
-### 1. Plan to Meet Requirements
+cd Storefront-Backend
 
-In this repo there is a `REQUIREMENTS.md` document which outlines what this API needs to supply for the frontend, as well as the agreed upon data shapes to be passed between front and backend. This is much like a document you might come across in real life when building or extending an API. 
+npm i yarn db-migrate -g
+```
 
-Your first task is to read the requirements and update the document with the following:
-- Determine the RESTful route for each endpoint listed. Add the RESTful route and HTTP verb to the document so that the frontend developer can begin to build their fetch requests.    
-**Example**: A SHOW route: 'blogs/:id' [GET] 
+### 2. Install Dependencies
 
-- Design the Postgres database tables based off the data shape requirements. Add to the requirements document the database tables and columns being sure to mark foreign keys.   
-**Example**: You can format this however you like but these types of information should be provided
-Table: Books (id:varchar, title:varchar, author:varchar, published_year:varchar, publisher_id:string[foreign key to publishers table], pages:number)
+Run the following command to install dependencies:
 
-**NOTE** It is important to remember that there might not be a one to one ratio between data shapes and database tables. Data shapes only outline the structure of objects being passed between frontend and API, the database may need multiple tables to store a single shape. 
+```bash
+yarn
+```
 
-### 2.  DB Creation and Migrations
+> [!NOTE]  
+> You may see errors for an optional dependency called cpu-features, you can safely ignore these errors.
 
-Now that you have the structure of the databse outlined, it is time to create the database and migrations. Add the npm packages dotenv and db-migrate that we used in the course and setup your Postgres database. If you get stuck, you can always revisit the database lesson for a reminder. 
+### 3. .env File
 
-You must also ensure that any sensitive information is hashed with bcrypt. If any passwords are found in plain text in your application it will not pass.
+> [!IMPORTANT]  
+> Normally .env files should **NEVER** be pushed to a public repository, but as this is a project submission, its values have been included below for the reviewer.
 
-### 3. Models
+**1.** Create the .env file:
 
-Create the models for each database table. The methods in each model should map to the endpoints in `REQUIREMENTS.md`. Remember that these models should all have test suites and mocks.
+```bash
+type nul > .env
+```
 
-### 4. Express Handlers
+**2.** Open the .env file and add the following values:
 
-Set up the Express handlers to route incoming requests to the correct model method. Make sure that the endpoints you create match up with the enpoints listed in `REQUIREMENTS.md`. Endpoints must have tests and be CORS enabled. 
+```bash
+POSTGRES_HOST=localhost
+POSTGRES_DB=storefront_dev
+POSTGRES_TEST_DB=storefront_test
+POSTGRES_USER=admin
+POSTGRES_PASSWORD=admin1234
+TOKEN_SECRET=MyWebTokenSecret321
+BCRYPT_SECRET=BcryptPass123
+SALT_ROUNDS=10
+ENV=dev
+```
 
-### 5. JWTs
+### 4. Run Docker Container
 
-Add JWT functionality as shown in the course. Make sure that JWTs are required for the routes listed in `REQUIUREMENTS.md`.
+Make sure you have Docker Desktop installed and running on your machine. Then run:
 
-### 6. QA and `README.md`
+```bash
+docker compose up
+```
 
-Before submitting, make sure that your project is complete with a `README.md`. Your `README.md` must include instructions for setting up and running your project including how you setup, run, and connect to your database. 
+The Postgres Docker image will be downloaded and a container will be created and started.
 
-Before submitting your project, spin it up and test each endpoint. If each one responds with data that matches the data shapes from the `REQUIREMENTS.md`, it is ready for submission!
+> [!NOTE]  
+> If you face any issues regarding volumes, try running this command first:
+
+```bash
+docker compose down -v
+```
+
+### 5. Build and Run
+
+Now the Docker container is running, you can proceed to build and run the project.  
+In a separate terminal, run the following commands in the project root directory:
+
+**1.** Build the project:
+
+```bash
+yarn build
+```
+
+**2.** Run the server:
+
+```bash
+yarn start
+```
+
+The server will start running at: `http://localhost:3000`
+
+If at anypoint you decide to reset the database, you can run:
+
+```bash
+db-migrate reset
+db-migrate up
+```
+
+> [!CAUTION]  
+> Resetting the database will delete all existing data
+
+## Usage
+
+You can use [Postman](https://www.postman.com/) or any other API testing tool to use the endpoints.
+
+### Endpoints
+
+| #      | Method | Endpoint                    | Description                               | Token Required | Arguments             |
+|--------|--------|-----------------------------|-------------------------------------------|----------------|-----------------------|
+| **1.** | GET    | /products                   | Get all products                          | No             |                       |
+| **2.** | GET    | /products/:id               | Get a product by id                       | No             | product id            |
+| **3.** | POST   | /products                   | Create a new product                      | Yes            |                       |
+| **4.** | GET    | /users                      | Get all users                             | Yes            |                       |
+| **5.** | GET    | /users/:id                  | Get a user by id                          | Yes            | user id               |
+| **6.** | POST   | /users                      | Create a new user                         | Yes            |                       |
+| **7.** | POST   | /orders                     | Create a new order                        | Yes            |                       |
+| **8.** | POST   | /orders/:id/products        | Add a product to an order by id           | Yes            | order id              |
+| **9.** | GET    | /users/:id/orders/:status   | Get open or complete orders by user id    | Yes            | user id, order status |
+
+> [!IMPORTANT]  
+> I dont know if its a design flaw or me not understanding the requirements correctly, but how can a user require a token to be created? The user wont have a token yet! So I made it so that the root route returns a valid token for the user to use. But in a logical scenario, the user should be able to create an account without a token.
+> Be sure to send the token in the `Authorization` header as `Bearer <token>` for the endpoints that require a token.
+
+### Endpoints Body Arguments
+
+Examples of body arguments for the POST endpoints:
+
+#### 1. /products (Create Product)
+
+```json
+{
+  "name": "Product Name",
+  "price": 100,
+  "category": "Product Category" // Optional
+}
+```
+
+#### 2. /users (Create User)
+
+```json
+{
+  "firstname": "First Name",
+  "lastname": "Last Name",
+  "password": "Password123"
+}
+```
+
+#### 3. /orders (Create Order)
+
+```json
+{
+  "user_id": 1,
+  "status": "open" // only accepts "open" or "complete"
+}
+```
+
+#### 4. /orders/:id/products (Add Product to Order)
+
+```json
+{
+  "product_id": 1,
+  "quantity": 5
+}
+```
+
+## Testing
+
+To run the tests, make sure the Docker container is running, then run the following command:
+
+```bash
+yarn test
+```
+
+> [!IMPORTANT]  
+> This command won't work on Windows Command Prompt, you need to use Git Bash.
+
+> [!NOTE]  
+> The tests use a separate test database, so your development database will not be affected.
+
+## Contributing
+
+Contributions are welcome!  
+Please open an issue or submit a pull request.
