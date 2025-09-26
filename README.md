@@ -100,65 +100,11 @@ db-migrate up
 
 You can use [Postman](https://www.postman.com/) or any other API testing tool to use the endpoints.
 
-### Endpoints
-
-| #      | Method | Endpoint                    | Description                               | Token Required | Arguments             |
-|--------|--------|-----------------------------|-------------------------------------------|----------------|-----------------------|
-| **1.** | GET    | /products                   | Get all products                          | No             |                       |
-| **2.** | GET    | /products/:id               | Get a product by id                       | No             | product id            |
-| **3.** | POST   | /products                   | Create a new product                      | Yes            |                       |
-| **4.** | GET    | /users                      | Get all users                             | Yes            |                       |
-| **5.** | GET    | /users/:id                  | Get a user by id                          | Yes            | user id               |
-| **6.** | POST   | /users                      | Create a new user                         | Yes            |                       |
-| **7.** | POST   | /orders                     | Create a new order                        | Yes            |                       |
-| **8.** | POST   | /orders/:id/products        | Add a product to an order by id           | Yes            | order id              |
-| **9.** | GET    | /users/:id/orders/:status   | Get open or complete orders by user id    | Yes            | user id, order status |
+Refer to [The Requirements](./REQUIREMENTS.md) for more info on the API endpoints and data shapes.
 
 > [!IMPORTANT]  
 > I dont know if its a design flaw or me not understanding the requirements correctly, but how can a user require a token to be created? The user wont have a token yet! So I made it so that the root route returns a valid token for the user to use. But in a logical scenario, the user should be able to create an account without a token.
 > Be sure to send the token in the `Authorization` header as `Bearer <token>` for the endpoints that require a token.
-
-### Endpoints Body Arguments
-
-Examples of body arguments for the POST endpoints:
-
-#### 1. /products (Create Product)
-
-```json
-{
-  "name": "Product Name",
-  "price": 100,
-  "category": "Product Category" // Optional
-}
-```
-
-#### 2. /users (Create User)
-
-```json
-{
-  "firstname": "First Name",
-  "lastname": "Last Name",
-  "password": "Password123"
-}
-```
-
-#### 3. /orders (Create Order)
-
-```json
-{
-  "user_id": 1,
-  "status": "open" // only accepts "open" or "complete"
-}
-```
-
-#### 4. /orders/:id/products (Add Product to Order)
-
-```json
-{
-  "product_id": 1,
-  "quantity": 5
-}
-```
 
 ## Testing
 
